@@ -87,6 +87,10 @@ export const List = () => {
     setNavigation(NAV.DETAIL)
   }
 
+  const onUsersPress = () => {
+    setNavigation(NAV.USERS)
+  }
+
   return(
     <View style={[
       // {backgroundColor: 'red'}
@@ -100,6 +104,17 @@ export const List = () => {
         renderItem={({item}) => renderItem({item, onPress: onSelectBook})}
         keyExtractor={item => item.id}
       />
+      <TouchableOpacity
+          onPress={onUsersPress}
+      >
+          <Text style={[
+              text.flinksmall,
+              layout.flatListItem
+          ]}
+          >
+              Users Page
+          </Text>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -120,6 +135,7 @@ const Search = (props) => {
 }
 
 const renderItem = ({item, onPress}) => {
+
   return (
     <View style={[
       layout.flatListItem
