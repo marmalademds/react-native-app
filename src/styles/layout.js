@@ -25,4 +25,9 @@ export const layout = StyleSheet.create({
         margin: 5,
         alignItems: 'center',
     },
+    thumbnail: {
+        width: 50,
+        height: 50,
+        borderRadius: 5,
+    },
   })

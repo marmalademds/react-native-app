@@ -4,18 +4,24 @@
  *
  * @format
  */
+import { useEffect } from 'react'
 import { 
   SafeAreaView, 
+  Text,
+  ActivityIndicator,
 } from 'react-native'
 import {
   Counter,
   List,
   BookDetailScreen,
+  Users,
 } from './pages'
 import {
   NavigationProvider,
   useNavigation,
   BookProvider,
+  UserProvider,
+  useRandomUser,
 } from './contexts'
 import {
   text,
@@ -26,13 +32,15 @@ export const App = () => {
   return (
     <NavigationProvider>
       <BookProvider>
-        <SafeAreaView
-          style={[
-            layout.app,
-          ]}
-        >
-          <RootNavigator />
-        </SafeAreaView>
+        <UserProvider>
+          <SafeAreaView
+            style={[
+              layout.app,
+            ]}
+          >
+            <RootNavigator />
+          </SafeAreaView>
+        </UserProvider>
       </BookProvider>
     </NavigationProvider>
   )
@@ -40,16 +48,34 @@ export const App = () => {
 
 const RootNavigator = () => {
   const { navigation, setNavigation, NAV } = useNavigation()
+  const { randomUsersIsLoading } = useRandomUser()
   console.log(navigation)
-  if (navigation === NAV.HOME) {
-    return <List />
+
+  useEffect(() => {
+    if (randomUsersIsLoading) {
+      console.log('Loading users...')
+    }
+    else {
+      console.log('Users loaded')
+    }
+  }, [randomUsersIsLoading])
+
+  if (randomUsersIsLoading) {
+    return (
+      <ActivityIndicator size="large" color="#0000ff" />
+    )
   }
 
-  if (navigation === NAV.DETAIL) {
-    return <BookDetailScreen />
-  }
-
-  if (navigation === NAV.COUNTER) {
-    return <Counter />
+  switch (navigation) {
+    case NAV.HOME:
+      return <List />;
+    case NAV.DETAIL:
+      return <BookDetailScreen />;
+    case NAV.COUNTER:
+      return <Counter />;
+    case NAV.USERS:
+      return <Users />;
+    default:
+      return null;
   }
 }
